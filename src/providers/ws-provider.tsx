@@ -32,8 +32,6 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
   return (
     <wsContext.Provider value={ws.current}>
       {children}
-    </wsContext.Provider>
-    
+    </wsContext.Provider> 
   )
-
 }

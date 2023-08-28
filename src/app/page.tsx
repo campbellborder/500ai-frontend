@@ -1,15 +1,13 @@
-'use client'
-
-import { wsContext } from "@/contexts/ws-context"
-import { useContext } from "react"
+import { StartDialog } from "@/components/start/start-dialog"
+import StartForms from "@/components/start/start-forms"
 
 export default function Home() {
 
-  const ws = useContext(wsContext)
-
   return (
-    <main>
-      <h1>500 App</h1>
+    <main className="bg-green-950 h-screen">
+      <StartDialog>
+        <StartForms/>
+      </StartDialog>
     </main>
   )
 
