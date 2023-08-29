@@ -66,9 +66,9 @@ function PlayerSetup({ player, position }: { player: any, position: string }) {
 
 export default function Setup() {
 
-  // Check if host
+  // Get host and position
   var isHost = false
-  var position = ""
+  var position: string
   state.players.forEach((player) => {
     if (player.you) {
       position = player.position
@@ -87,7 +87,7 @@ export default function Setup() {
         ))}
         <div className="absolute w-1/3 h-1/3 bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 flex flex-col justify-around">
         <h3 className="w-full my-4 text-white">Game code: {state.gamecode}</h3>
-        {isHost && <Button variant="secondary" className="h-8 mx-auto my-2">Start game</Button>}
+        {isHost && <Button variant="secondary" className="h-8 mx-auto my-2 text-green-900">Start game</Button>}
         {!isHost && <h3 className="w-full my-4 text-white">Waiting for host...</h3>}
         </div>
       </div>  
