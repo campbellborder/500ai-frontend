@@ -2,6 +2,8 @@
 
 import { cn, mod } from "@/lib/utils"
 import { Button } from "../ui/button"
+import { useContext, useEffect } from "react"
+import { wsContext } from "@/contexts/ws-context"
 
 const state = {
   gamecode: "12345678",
@@ -36,9 +38,9 @@ function PlayerSetup({ player, position }: { player: any, position: string }) {
   const positions = ["N", "E", "S", "W"]
   const positionClasses = [
     "bottom-0 right-1/2 translate-x-1/2 justify-end",
-    "top-1/2 left-0 -translate-y-1/2 rotate-90 justify-end",
+    "top-1/2 left-0 -translate-y-1/2 -translate-x-1/4 rotate-90 justify-end",
     "top-0 right-1/2 translate-x-1/2",
-    "top-1/2 right-0 -translate-y-1/2 -rotate-90 justify-end"
+    "top-1/2 right-0 -translate-y-1/2 translate-x-1/4 -rotate-90 justify-end"
   ]
 
   const buttonClasses = [
@@ -53,7 +55,7 @@ function PlayerSetup({ player, position }: { player: any, position: string }) {
   const buttonClass = buttonClasses[positionIndex]
 
   return (
-    <div className={cn("absolute w-1/3 h-1/3 text-center flex flex-col items-center overflow-hidden", positionClass)}>
+    <div className={cn("absolute w-1/2 h-1/4 text-center flex flex-col items-center overflow-hidden", positionClass)}>
       <h2 className={cn("text-center text-sm text-white m-1", positionIndex == 2 ? "order-2" : "order-1")}>
         {player.username}
         {player.host && <span>{" (Host)"}</span>}
@@ -65,6 +67,11 @@ function PlayerSetup({ player, position }: { player: any, position: string }) {
 }
 
 export default function Setup() {
+
+  const { ws } = useContext(wsContext)
+  useEffect(() => {
+    ws.current.send(JSON.stringify("request setup state"))
+  })
 
   // Get host and position
   var isHost = false
@@ -88,7 +95,9 @@ export default function Setup() {
         <div className="absolute w-1/3 h-1/3 bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 flex flex-col justify-around">
         <h3 className="w-full my-4 text-white">Game code: {state.gamecode}</h3>
         {isHost && <Button variant="secondary" className="h-8 mx-auto my-2 text-green-900">Start game</Button>}
-        {!isHost && <h3 className="w-full my-4 text-white">Waiting for host...</h3>}
+        {!isHost && <Button variant="secondary" className="h-8 mx-auto my-2 text-green-900">Leave</Button>}
+        {!isHost && <h3 className="w-full my-5 text-white text-xs">Waiting for host...</h3>}
+        
         </div>
       </div>  
     </div>

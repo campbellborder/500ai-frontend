@@ -1,11 +1,34 @@
 'use client'
 
-import { ReactElement, useRef } from 'react';
+import { ReactElement, useContext, useRef } from 'react';
 import { wsContext } from '@/contexts/ws-context';
+import { addInitialEventListeners } from '@/lib/ws-utils';
+import { stateContext } from '@/contexts/state-context';
 
 export default function WebSocketsProvider({children} : {children: ReactElement}) {
 
-  const ws = useRef<WebSocket | null>(null)
+  const { state, setState} = useContext(stateContext)
+  const ws = useRef<WebSocket | null>(null);
+
+  function addEventListeners() {
+    if (ws.current) {
+      ws.current.addEventListener("message", function(event: MessageEvent) {
+        console.log("receieved message!")
+        console.log(event.data);
+      });
+      ws.current.addEventListener("close", function(event: CloseEvent) {
+        // Error popup
+        setState("start");
+        ws.current = null;
+      });
+      ws.current.addEventListener("error", function(event: Event) {
+        // Error popup
+        // Try to reconnect?
+        setState("start");
+        ws.current = null;
+      });
+    }
+  }
 
   async function connectAsync(username: string, gamecode?: string) {
 
@@ -15,39 +38,13 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
       const url = new URL("ws://127.0.0.1:8000/")
       url.searchParams.append("username", username)
       if (gamecode) url.searchParams.append("gamecode", gamecode)
-
+      
+      // Connect to websocket
       console.log(`Attemping to connect to ${url.href}`)
       const socket = new WebSocket(url.href)
 
-      socket.addEventListener("open", function(event) {
-      })
-
-      socket.addEventListener("message", function(event) {
-        const data = JSON.parse(event.data);
-        if (data.status === 'success') {
-          console.log(`Connected to ${url.href}`)
-          ws.current = socket;
-          // Remove listeners
-          // Add other listeners
-
-          // Message: handle incoming information
-          // Close/error: display error popup and go back to start state
-
-          resolve();
-        } else {
-          reject({ reason: data.reason });
-        }
-      });
-  
-      socket.addEventListener("close", function (event) {
-        console.log("Disconnected from WebSocket");
-        reject({ reason: "Disconnected" });
-      });
-      
-      socket.addEventListener("error", function (event) {
-        console.log("Error connecting to WebSocket");
-        reject({ reason: "Connection error" });
-      });
+      // Add listeners
+      addInitialEventListeners(ws, socket, url, resolve, reject, addEventListeners);
     })
   }
 

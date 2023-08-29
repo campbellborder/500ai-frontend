@@ -23,13 +23,13 @@ import {
 
 // Define form schemas
 const formSchemaNew = z.object({
-  username: z.string().min(2, "Username must contain between 2 and 20 characters")
-                      .max(20, "Username must contain between 2 and 20 characters")
+  username: z.string().min(2, "Username must contain between 2 and 15 characters")
+                      .max(15, "Username must contain between 2 and 15 characters")
 })
 const formSchemaJoin = z.object({
   gamecode: z.string().length(8, "Code must contain exactly 8 characters"),
-  username: z.string().min(2, "Username must contain between 2 and 20 characters")
-                      .max(20, "Username must contain between 2 and 20 characters")
+  username: z.string().min(2, "Username must contain between 2 and 15 characters")
+                      .max(15, "Username must contain between 2 and 15 characters")
 })
 
 // Schema types
