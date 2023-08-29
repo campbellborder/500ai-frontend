@@ -1,12 +1,18 @@
 'use client'
 
+// Imports
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader2 } from "lucide-react"
+import { useContext, useState } from "react"
+import { wsContext } from "@/contexts/ws-context"
+import { stateContext } from "@/contexts/state-context"
+import { useForm } from "react-hook-form"
 
+// Component imports
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useForm } from "react-hook-form"
 import {
   Form,
   FormControl,
@@ -14,81 +20,66 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form"
- 
+
+// Define form schemas
 const formSchemaNew = z.object({
   username: z.string().min(2, "Username must contain between 2 and 20 characters")
                       .max(20, "Username must contain between 2 and 20 characters")
 })
-
 const formSchemaJoin = z.object({
   gamecode: z.string().length(8, "Code must contain exactly 8 characters"),
   username: z.string().min(2, "Username must contain between 2 and 20 characters")
                       .max(20, "Username must contain between 2 and 20 characters")
 })
 
-function NewGameForm() {
+// Schema types
+type formTypeNew = z.infer<typeof formSchemaNew>
+type formTypeJoin = z.infer<typeof formSchemaJoin>
+type formType = formTypeNew | formTypeJoin
 
-  const form = useForm<z.infer<typeof formSchemaNew>>({
-    resolver: zodResolver(formSchemaNew),
-    defaultValues: {
-      username: "",
-    },
-  })
- 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchemaNew>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-  }
+function StartForm({variant}: {variant: "new" | "join"}) {
 
-  return (
-    <div className="w-4/6 mx-auto mt-10 mb-5">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder="Username" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex">
-            <Button className="mx-auto bg-green-900" type="submit">Create</Button>
-          </div>
-        </form>
-      </Form>
-    </div>
-  )
-}
-
-function JoinGameForm() {
-
-  const form = useForm<z.infer<typeof formSchemaJoin>>({
-    resolver: zodResolver(formSchemaJoin),
+  // Hooks
+  const { connect }  = useContext(wsContext)
+  const { setState } = useContext(stateContext)
+  const [loading, setLoading] = useState(false)
+  const form = useForm<formType>({
+    resolver: zodResolver(variant=="new" ? formSchemaNew: formSchemaJoin),
     defaultValues: {
       username: "",
       gamecode: ""
     },
   })
- 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchemaNew>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+
+  async function onSubmit(values: formType) {
+
+    setLoading(true)
+    
+
+    // Connect to backend and go to setup state
+    try {
+      await connect(values.username, (values as formTypeJoin).gamecode)
+      setState("setup")
+    } catch (e: any) {
+      // Display error
+      if (e.reason == "username") {
+        form.setError("username", {type: "custom", message: "Username already taken in this game."})
+      } else if (e.reason == "gamecode") {
+        form.setError("gamecode", {type: "custom", message: "Game does not exist."})
+      } else {
+        form.setError("username", {type: "custom", message: "Unable to connect. Try again later."})
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="w-4/6 mx-auto mt-10 mb-5">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
+          {variant == "join" && 
+          (<FormField
             control={form.control}
             name="gamecode"
             render={({ field }) => (
@@ -99,7 +90,7 @@ function JoinGameForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          />)}
           <FormField
             control={form.control}
             name="username"
@@ -113,13 +104,17 @@ function JoinGameForm() {
             )}
           />
           <div className="flex">
-            <Button className="mx-auto bg-green-900" type="submit">Join</Button>
+            <Button className="mx-auto bg-green-900" type="submit" disabled={loading}>
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {variant == "new" ? "Create" : "Join"}
+              </Button>
           </div>
         </form>
       </Form>
     </div>
   )
 }
+
 
 export default function StartForms() {
 
@@ -130,10 +125,10 @@ export default function StartForms() {
       <TabsTrigger className="w-full" value="join">Join</TabsTrigger>
     </TabsList>
     <TabsContent value="new" className="">
-      <NewGameForm/>
+      <StartForm variant="new"/>
     </TabsContent>
     <TabsContent value="join">
-      <JoinGameForm/>
+    <StartForm variant="join"/>
     </TabsContent>
   </Tabs>
   )
