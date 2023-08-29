@@ -5,6 +5,7 @@ import { StartDialog } from "@/components/start/start-dialog"
 import StartForms from "@/components/start/start-forms"
 import { createContext, useContext } from "react"
 import { stateContext } from "@/contexts/state-context"
+import Setup from "@/components/setup/setup"
 
 export default function Home() {
 
@@ -20,7 +21,7 @@ export default function Home() {
       }
       {state == "setup" &&
       (<SetupDialog>
-        <h2>arr</h2>
+        <Setup/>
       </SetupDialog>)}
     </main>
   )
