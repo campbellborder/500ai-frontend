@@ -55,11 +55,9 @@ function StartForm({variant}: {variant: "new" | "join"}) {
 
     setLoading(true)
     
-
-    // Connect to backend and go to setup state
+    // Connect to backend
     try {
       await connect(values.username, (values as formTypeJoin).gamecode)
-      setState("setup")
     } catch (e: any) {
       // Display error
       if (e.reason == "username") {
@@ -69,7 +67,6 @@ function StartForm({variant}: {variant: "new" | "join"}) {
       } else {
         form.setError("username", {type: "custom", message: "Unable to connect. Try again later."})
       }
-    } finally {
       setLoading(false)
     }
   }

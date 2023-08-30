@@ -17,14 +17,16 @@ export function addInitialEventListeners(
 
   function initialMessageEventListener(event: MessageEvent) {
     const data = JSON.parse(event.data);
-    if (data.status === 'success') {
+    if (data.type == "connect" && data.status === 'success') {
       console.log(`Connected to ${url.href}`)
       ws.current = socket;
       removeInitialEventListeners(ws.current)
       addEventListeners()
       resolve();
-    } else {
+    } else if (data.type == "connect" && data.reason) {
       reject({ reason: data.reason });
+    } else {
+      reject({ reason: `Expected connect response, got ${data}`})
     }
   }
 

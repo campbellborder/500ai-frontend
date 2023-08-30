@@ -7,14 +7,15 @@ import { stateContext } from '@/contexts/state-context';
 
 export default function WebSocketsProvider({children} : {children: ReactElement}) {
 
-  const { state, setState} = useContext(stateContext)
+  const { setState} = useContext(stateContext)
   const ws = useRef<WebSocket | null>(null);
 
   function addEventListeners() {
     if (ws.current) {
       ws.current.addEventListener("message", function(event: MessageEvent) {
         console.log("receieved message!")
-        console.log(event.data);
+        console.log(JSON.parse(event.data));
+        setState(JSON.parse(event.data))
       });
       ws.current.addEventListener("close", function(event: CloseEvent) {
         // Error popup
@@ -49,7 +50,7 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
   }
 
   return (
-    <wsContext.Provider value={{ws: ws, connect: connectAsync}}>
+    <wsContext.Provider value={{ws: ws.current, connect: connectAsync}}>
       {children}
     </wsContext.Provider> 
   )

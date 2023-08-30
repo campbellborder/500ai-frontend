@@ -4,33 +4,14 @@ import { cn, mod } from "@/lib/utils"
 import { Button } from "../ui/button"
 import { useContext, useEffect } from "react"
 import { wsContext } from "@/contexts/ws-context"
+import { stateContext } from "@/contexts/state-context"
 
-const state = {
-  gamecode: "12345678",
-  players: [
-    {
-      position: "N",
-      type: "empty",
-    },
-    {
-      position: "E",
-      type: "human",
-      username: "thc-lane",
-      host: false,
-      you: false
-    },
-    {
-      position: "S",
-      type: "human",
-      username: "garyrolls",
-      host: true,
-      you: true
-    },
-    {
-      position: "W",
-      type: "empty",
-    }
-  ]
+interface Player {
+  position: string,
+  type: string,
+  username?: string,
+  host?: string,
+  you?: string
 }
 
 function PlayerSetup({ player, position }: { player: any, position: string }) {
@@ -68,15 +49,13 @@ function PlayerSetup({ player, position }: { player: any, position: string }) {
 
 export default function Setup() {
 
+  const { state } = useContext(stateContext)
   const { ws } = useContext(wsContext)
-  useEffect(() => {
-    ws.current.send(JSON.stringify("request setup state"))
-  })
 
   // Get host and position
   var isHost = false
   var position: string
-  state.players.forEach((player) => {
+  state.players.forEach((player: Player) => {
     if (player.you) {
       position = player.position
       if (player.host) {
@@ -89,7 +68,7 @@ export default function Setup() {
     <div className="w-full flex-col text-center">
       
       <div className="w-full p-2 aspect-square bg-green-900 relative rounded-lg">
-        {state.players.map((player) => (
+        {state.players.map((player: Player) => (
           <PlayerSetup player={player} position={position} key={player.position} />
         ))}
         <div className="absolute w-1/3 h-1/3 bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 flex flex-col justify-around">
