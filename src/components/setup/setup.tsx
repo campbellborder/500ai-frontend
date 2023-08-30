@@ -1,10 +1,10 @@
 'use client'
 
-import { cn, mod } from "@/lib/utils"
-import { Button } from "../ui/button"
 import { useContext, useEffect } from "react"
 import { wsContext } from "@/contexts/ws-context"
 import { stateContext } from "@/contexts/state-context"
+import { SetupPlayer } from "./setup-player"
+import { Button } from "../ui/button"
 
 interface Player {
   position: string,
@@ -12,39 +12,6 @@ interface Player {
   username?: string,
   host?: string,
   you?: string
-}
-
-function PlayerSetup({ player, position }: { player: any, position: string }) {
-
-  const positions = ["N", "E", "S", "W"]
-  const positionClasses = [
-    "bottom-0 right-1/2 translate-x-1/2 justify-end",
-    "top-1/2 left-0 -translate-y-1/2 -translate-x-1/4 rotate-90 justify-end",
-    "top-0 right-1/2 translate-x-1/2",
-    "top-1/2 right-0 -translate-y-1/2 translate-x-1/4 -rotate-90 justify-end"
-  ]
-
-  const buttonClasses = [
-    "rounded-b-none order-2",
-    "rounded-b-none order-2",
-    "rounded-t-none order-1",
-    "rounded-b-none order-2",
-  ]
-
-  const positionIndex = mod(positions.indexOf(player.position) - positions.indexOf(position), 4)
-  const positionClass = positionClasses[positionIndex]
-  const buttonClass = buttonClasses[positionIndex]
-
-  return (
-    <div className={cn("absolute w-1/2 h-1/4 text-center flex flex-col items-center overflow-hidden", positionClass)}>
-      <h2 className={cn("text-center text-sm text-white m-1", positionIndex == 2 ? "order-2" : "order-1")}>
-        {player.username}
-        {player.host && <span>{" (Host)"}</span>}
-      </h2>
-      {player.type == "empty" && <Button variant="outline" className={cn("h-8 w-28 bg-transparent text-white -mb-[1px] -mt-[1px]", buttonClass)}>Move here</Button>}
-      {player.type != "empty" && <Button className={cn("h-8 w-28 bg-black disabled:opacity-100", buttonClass)} disabled></Button>}
-    </div>
-  )
 }
 
 export default function Setup() {
@@ -64,17 +31,47 @@ export default function Setup() {
     }
   })
 
+  function onLeave() {
+    ws.close()
+  }
+
+  function onMove(position: string) {
+    ws.send(JSON.stringify(
+      {
+        "type": "update",
+        "state": "setup",
+        "action": {
+          "type": "move-position",
+          "position": position
+        }
+      }))
+  }
+
+  function onStart() {
+    ws.send(JSON.stringify(
+      {
+        "type": "update",
+        "state": "setup",
+        "action": {
+          "type": "start-game"
+        }
+      }))
+  }
+
   return (
     <div className="w-full flex-col text-center">
       
       <div className="w-full p-2 aspect-square bg-green-900 relative rounded-lg">
         {state.players.map((player: Player) => (
-          <PlayerSetup player={player} position={position} key={player.position} />
+          <SetupPlayer player={player} position={position} key={player.position} onMove={onMove} />
         ))}
         <div className="absolute w-1/3 h-1/3 bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 flex flex-col justify-around">
-        <h3 className="w-full my-4 text-white">Game code: {state.gamecode}</h3>
-        {isHost && <Button variant="secondary" className="h-8 mx-auto my-2 text-green-900">Start game</Button>}
-        {!isHost && <Button variant="secondary" className="h-8 mx-auto my-2 text-green-900">Leave</Button>}
+        <h3 className="w-full my-4 text-white text-xs">
+          Game code: <br/>
+          <span className="text-lg text-bold">{state.gamecode}</span>
+        </h3>
+        {<Button variant="secondary" className="h-8 w-28 mx-auto text-green-900" onClick={onLeave}>Leave</Button>}
+        {isHost && <Button variant="secondary" className="h-8 w-28 mx-auto my-2 text-green-900">Start game</Button>}
         {!isHost && <h3 className="w-full my-5 text-white text-xs">Waiting for host...</h3>}
         
         </div>

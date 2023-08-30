@@ -13,19 +13,18 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
   function addEventListeners() {
     if (ws.current) {
       ws.current.addEventListener("message", function(event: MessageEvent) {
-        console.log("receieved message!")
         console.log(JSON.parse(event.data));
         setState(JSON.parse(event.data))
       });
       ws.current.addEventListener("close", function(event: CloseEvent) {
         // Error popup
-        setState("start");
+        setState({state: "start"});
         ws.current = null;
       });
       ws.current.addEventListener("error", function(event: Event) {
         // Error popup
         // Try to reconnect?
-        setState("start");
+        setState({state: "start"});
         ws.current = null;
       });
     }
