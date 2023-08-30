@@ -17,7 +17,7 @@ interface Player {
 export default function Setup() {
 
   const { state } = useContext(stateContext)
-  const { ws } = useContext(wsContext)
+  const { ws, close } = useContext(wsContext)
 
   // Get host and position
   var isHost = false
@@ -32,7 +32,7 @@ export default function Setup() {
   })
 
   function onLeave() {
-    ws.close()
+    close()
   }
 
   function onMove(position: string) {

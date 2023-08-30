@@ -1,29 +1,48 @@
 'use client'
 
-import { ReactElement, useContext, useRef } from 'react';
+import { ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import { wsContext } from '@/contexts/ws-context';
-import { addInitialEventListeners } from '@/lib/ws-utils';
+import { addInitialEventListeners, displayAlertToast, displayErrorToast } from '@/lib/ws-utils';
 import { stateContext } from '@/contexts/state-context';
+import { useToast } from '@/components/ui/use-toast';
+import { AlertMessage, Message, StateMessage } from '@/lib/message-types';
 
 export default function WebSocketsProvider({children} : {children: ReactElement}) {
 
-  const { setState} = useContext(stateContext)
+  // Hooks
+  const { setState } = useContext(stateContext)
   const ws = useRef<WebSocket | null>(null);
+  const { toast } = useToast()
+  const closed = useRef(false)
+
+  function close() {
+    if (ws.current) {
+      closed.current = true
+      ws.current.close()
+    }
+  }
 
   function addEventListeners() {
     if (ws.current) {
       ws.current.addEventListener("message", function(event: MessageEvent) {
-        console.log(JSON.parse(event.data));
-        setState(JSON.parse(event.data))
+        const message: Message = JSON.parse(event.data)
+        if (message.type == "state") {
+          setState(message as StateMessage)
+        } else if (message.type == "alert") {
+          displayAlertToast(toast, message as AlertMessage)
+        }
       });
       ws.current.addEventListener("close", function(event: CloseEvent) {
-        // Error popup
+        if (!closed.current) {
+          displayErrorToast(toast)
+        }
         setState({state: "start"});
         ws.current = null;
+        closed.current = false
       });
       ws.current.addEventListener("error", function(event: Event) {
-        // Error popup
-        // Try to reconnect?
+        displayErrorToast(toast)
+        // TODO: Try to reconnect?
         setState({state: "start"});
         ws.current = null;
       });
@@ -43,13 +62,13 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
       console.log(`Attemping to connect to ${url.href}`)
       const socket = new WebSocket(url.href)
 
-      // Add listeners
+      // Add initial listeners
       addInitialEventListeners(ws, socket, url, resolve, reject, addEventListeners);
     })
   }
 
   return (
-    <wsContext.Provider value={{ws: ws.current, connect: connectAsync}}>
+    <wsContext.Provider value={{ws: ws.current, connect: connectAsync, close: close}}>
       {children}
     </wsContext.Provider> 
   )

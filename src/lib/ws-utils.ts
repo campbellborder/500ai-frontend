@@ -1,4 +1,5 @@
 import { MutableRefObject } from "react"
+import { AlertMessage } from "./message-types";
 
 export function addInitialEventListeners(
   ws: MutableRefObject<WebSocket | null>,
@@ -44,4 +45,34 @@ export function addInitialEventListeners(
   socket.addEventListener("close", initialCloseEventListener);
   socket.addEventListener("error", initialErrorEventListener);
 
+}
+
+export function displayAlertToast(toast: any, message: AlertMessage) {
+  if (message.status == "player-joined") {
+    toast({
+      description: `${message.username} has joined the game.`,
+    })
+  } else if (message.status == "player-left") {
+    toast({
+      description: `${message.username} has left the game.`,
+      variant: "destructive"
+    })
+  } else if (message.status == "new-host") {
+    if (message.you) {
+      toast({
+        description: "You are now the host."
+      })
+    } else {
+      toast({
+        description: `${message.username} is now the host.`
+      })
+    }
+  }
+}
+
+export function displayErrorToast(toast: any) {
+  toast({
+    description: "Something went wrong.",
+    variant: "destructive"
+  })
 }

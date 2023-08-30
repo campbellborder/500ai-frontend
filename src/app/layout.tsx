@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import WebSocketsProvider from '@/providers/ws-provider'
 import StateProvider from '@/providers/state-provider'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <StateProvider>
         <WebSocketsProvider>
-        <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            {children}
+            <Toaster/>
+          </body>
         </WebSocketsProvider>
       </StateProvider>
     </html>
