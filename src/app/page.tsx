@@ -13,12 +13,12 @@ export default function Home() {
 
   return (
     <main className="bg-green-950 h-screen">
-      {state.state == "start" &&
+      {state.phase == "start" &&
       (<StartDialog>
         <StartForms/>
       </StartDialog>)
       }
-      {state.state == "setup" &&
+      {state.phase == "setup" &&
       (<SetupDialog>
         <Setup/>
       </SetupDialog>)}

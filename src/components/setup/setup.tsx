@@ -39,7 +39,7 @@ export default function Setup() {
     ws.send(JSON.stringify(
       {
         "type": "update",
-        "state": "setup",
+        "phase": "setup",
         "action": {
           "type": "move-position",
           "position": position
@@ -51,7 +51,7 @@ export default function Setup() {
     ws.send(JSON.stringify(
       {
         "type": "update",
-        "state": "setup",
+        "phase": "setup",
         "action": {
           "type": "start-game"
         }
@@ -70,8 +70,8 @@ export default function Setup() {
           Game code: <br/>
           <span className="text-lg text-bold">{state.gamecode}</span>
         </h3>
-        {<Button variant="secondary" className="h-8 w-28 mx-auto text-green-900" onClick={onLeave}>Leave</Button>}
-        {isHost && <Button variant="secondary" className="h-8 w-28 mx-auto my-2 text-green-900">Start game</Button>}
+        {<Button onClick={onLeave} variant="secondary" className="h-8 w-28 mx-auto text-green-900">Leave</Button>}
+        {isHost && <Button onClick={onStart} variant="secondary" className="h-8 w-28 mx-auto my-2 text-green-900">Start game</Button>}
         {!isHost && <h3 className="w-full my-5 text-white text-xs">Waiting for host...</h3>}
         
         </div>

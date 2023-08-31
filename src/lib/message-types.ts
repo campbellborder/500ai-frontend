@@ -1,22 +1,22 @@
 export type Message = StateMessage | AlertMessage
 
 export interface StateMessage {
-  type: string,
-  state: string,
+  type: "state",
+  state: "setup" | "play",
   gamecode: string
   players: Player[]
 }
 
 export interface AlertMessage {
-  type: string,
-  status: string,
+  type: "alert",
+  status: "player-joined" | "player-left" | "new-host",
   username: string,
   you?: boolean
 }
 
 export interface Player {
-  position: string,
-  type: string,
+  position: "N" | "E" | "S" | "W",
+  type: "empty" | "human" | "ai",
   username: string,
   host: boolean,
   you: boolean

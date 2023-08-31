@@ -36,14 +36,14 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
         if (!closed.current) {
           displayErrorToast(toast)
         }
-        setState({state: "start"});
+        setState({phase: "start"});
         ws.current = null;
         closed.current = false
       });
       ws.current.addEventListener("error", function(event: Event) {
         displayErrorToast(toast)
         // TODO: Try to reconnect?
-        setState({state: "start"});
+        setState({phase: "start"});
         ws.current = null;
       });
     }

@@ -41,7 +41,6 @@ function StartForm({variant}: {variant: "new" | "join"}) {
 
   // Hooks
   const { connect }  = useContext(wsContext)
-  const { setState } = useContext(stateContext)
   const [loading, setLoading] = useState(false)
   const form = useForm<formType>({
     resolver: zodResolver(variant=="new" ? formSchemaNew: formSchemaJoin),
