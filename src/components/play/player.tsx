@@ -67,11 +67,13 @@ export default function Player({ player, our_position }: {player: PlayerType, ou
     <div className="absolute" 
          style={{...sizeStyle, ... positionStyle}}>
       <div className="relative h-full w-full flex flex-col items-center justify-end " style={{transform: `translateY(${playerHeight/2}px)`}}>
-      <div className="text-white text-xl pb-4">
+      <div className="text-white text-md md:text-xl pb-4">
         {player.username}
       </div>
-      <Hand cards={player.hand!} num={player.num_cards} width={playerWidth} height={playerHeight}/>
+      <Hand cards={player.hand!} num={10} width={playerWidth} height={playerHeight}/>
       </div>
     </div>
   );
 }
+
+//"RJ", "TS", "AD"

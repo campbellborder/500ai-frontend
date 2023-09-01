@@ -1,6 +1,6 @@
 import Card from "./card";
 
-export default function Hand({cards, num, width, height}: {cards: string[] | null, num: number, width: number, height: number}) {
+export default function Hand({cards, num, width, height}: {cards: string[] | undefined, num: number, width: number, height: number}) {
   if (!cards) {
     cards  = Array(num).fill("back");
   }
@@ -13,10 +13,10 @@ export default function Hand({cards, num, width, height}: {cards: string[] | nul
   const handTranslate = (width - cardWidth * (num + 3) / 4) / 2
 
   return (
-    <div className="relative mx-auto flex" style={{width: 10 * cardWidth, transform: `translateX(${handTranslate}px)`}}>
+    <div className="relative h-full mx-auto flex" style={{width: 13 * cardWidth, transform: `translateX(${handTranslate}px)`}}>
       {cards.map((card, i) => {
         const angle = (i-Math.floor(cards!.length / 2)) * angleIncrement;
-        const translateY = Math.abs(i - Math.floor(cards!.length / 2  -1.01))**1.8 * heightIncrement;
+        const translateY = Math.abs(i - cards!.length / 2 + 2)**1.9 * heightIncrement;
         const translateX = (overlap * i)
         return (
         <Card
