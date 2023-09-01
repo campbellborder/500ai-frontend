@@ -20,6 +20,7 @@ export interface Player {
   username: string,
   host: boolean,
   you: boolean,
+  current?: boolean,
   hand?: string[],
-  num_cards: number
+  num_cards?: number
 }

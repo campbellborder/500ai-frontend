@@ -67,8 +67,8 @@ const dummy_state = {
 
 export default function StateProvider({children} : {children: ReactElement}) {
 
-    const [state, setState] = useState(dummy_state)
-    // const [state, setState] = useState({phase: "start"})
+    // const [state, setState] = useState(dummy_state)
+    const [state, setState] = useState({phase: "start"})
 
   return (
     <stateContext.Provider value={{state: state, setState: setState}}>

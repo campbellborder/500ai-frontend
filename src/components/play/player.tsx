@@ -2,6 +2,7 @@ import { mod } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Player as PlayerType } from "@/lib/message-types";
 import Hand from "./hand";
+import { Bot } from "lucide-react";
 
 export default function Player({ player, our_position }: {player: PlayerType, our_position: string}) {
 
@@ -68,7 +69,9 @@ export default function Player({ player, our_position }: {player: PlayerType, ou
          style={{...sizeStyle, ... positionStyle}}>
       <div className="relative h-full w-full flex flex-col items-center justify-end " style={{transform: `translateY(${playerHeight/2}px)`}}>
       <div className="text-white text-md md:text-xl pb-4">
+        {player.type == "ai" && (<span><Bot className="inline w-[20px] md:w-[25px] mb-1 md:mb-2"/>{" "}</span>)}
         {player.username}
+        {player.host && <span>{" (Host)"}</span>}
       </div>
       <Hand cards={player.hand!} num={10} width={playerWidth} height={playerHeight}/>
       </div>
