@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-export function SetupDialog({children}: {children: ReactElement}) {
+export default function SetupDialog({children}: {children: ReactElement}) {
 
   const [isOpen, setIsOpen] = useState(false)
 

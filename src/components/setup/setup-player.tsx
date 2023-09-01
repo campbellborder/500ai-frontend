@@ -1,7 +1,7 @@
 import { cn, mod } from "@/lib/utils"
 import { Button } from "../ui/button"
 
-export function SetupPlayer({ player, position, onMove }: { player: any, position: string, onMove: (position: string) => void}) {
+export function SetupPlayer({ player, position: our_position, onMove }: { player: any, position: string, onMove: (position: string) => void}) {
 
   const positions = ["N", "E", "S", "W"]
   const positionClasses = [
@@ -18,7 +18,7 @@ export function SetupPlayer({ player, position, onMove }: { player: any, positio
     "rounded-b-none order-2",
   ]
 
-  const positionIndex = mod(positions.indexOf(player.position) - positions.indexOf(position), 4)
+  const positionIndex = mod(positions.indexOf(player.position) - positions.indexOf(our_position), 4)
   const positionClass = positionClasses[positionIndex]
   const buttonClass = buttonClasses[positionIndex]
 

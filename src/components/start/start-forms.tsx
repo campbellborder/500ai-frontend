@@ -112,7 +112,7 @@ function StartForm({variant}: {variant: "new" | "join"}) {
 }
 
 
-export default function StartForms() {
+export default function Start() {
 
   return (
     <Tabs defaultValue="new" className="w-full">

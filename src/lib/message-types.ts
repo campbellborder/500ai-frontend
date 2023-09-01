@@ -19,5 +19,7 @@ export interface Player {
   type: "empty" | "human" | "ai",
   username: string,
   host: boolean,
-  you: boolean
+  you: boolean,
+  hand?: string[],
+  num_cards: number
 }

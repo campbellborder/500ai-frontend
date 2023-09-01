@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-export function StartDialog({children}: {children: ReactElement}) {
+export default function StartDialog({children}: {children: ReactElement}) {
 
   const [isOpen, setIsOpen] = useState(false)
 
