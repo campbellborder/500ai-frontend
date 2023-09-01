@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
 import { useContext, useState } from "react"
 import { wsContext } from "@/contexts/ws-context"
-import { stateContext } from "@/contexts/state-context"
 import { useForm } from "react-hook-form"
 
 // Component imports
@@ -59,10 +58,12 @@ function StartForm({variant}: {variant: "new" | "join"}) {
       await connect(values.username, (values as formTypeJoin).gamecode)
     } catch (e: any) {
       // Display error
-      if (e.reason == "username") {
-        form.setError("username", {type: "custom", message: "Username already taken in this game."})
-      } else if (e.reason == "gamecode") {
+       if (e.reason == "no-game") {
         form.setError("gamecode", {type: "custom", message: "Game does not exist."})
+      } else if (e.reason == "game-full") {
+        form.setError("gamecode", {type: "custom", message: "Game is currently full."})
+      } else if (e.reason == "username") {
+        form.setError("username", {type: "custom", message: "Username already taken in this game."})
       } else {
         form.setError("username", {type: "custom", message: "Unable to connect. Try again later."})
       }

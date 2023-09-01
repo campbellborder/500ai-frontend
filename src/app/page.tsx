@@ -4,7 +4,7 @@
 import { useContext } from "react"
 import { stateContext } from "@/contexts/state-context"
 
-import Start from "@/components/start/start-forms"
+import Start from "@/components/start/start"
 import StartDialog from "@/components/start/start-dialog"
 import Setup from "@/components/setup/setup"
 import SetupDialog from "@/components/setup/setup-dialog"
