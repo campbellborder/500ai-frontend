@@ -17,7 +17,7 @@ export default function SetupDialog({children}: {children: ReactElement}) {
 
   return (
     <Dialog open={isOpen}>
-      <DialogContent>
+      <DialogContent className="w-[90%] rounded-lg">
         <DialogHeader>
           <DialogTitle className="text-center text-xl">Setup</DialogTitle>
         </DialogHeader>

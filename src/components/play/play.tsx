@@ -13,6 +13,7 @@ export default function Play() {
 
   // Get position and current
   var isCurrent = false
+  var currentUsername = null
   var our_position: string
   state.players.forEach((player: Player) => {
     if (player.you) {
@@ -20,17 +21,21 @@ export default function Play() {
       if (player.current) {
         isCurrent = true
       }
+    } else {
+      if (player.current) {
+        currentUsername = player.username
+      }
     }
   })
 
   return (
-    <div className="absolute w-full h-full overflow-hidden">
+    <div className="absolute flex items-center justify-center w-full h-full overflow-hidden">
       {state.players.map((player: Player) => (
         <PlayerComponent player={player} our_position={our_position} key={player.position}/>
       ))}
-      {state.round_phase == "bid" && isCurrent && (
-        <Bidding/>
-      )}      
+      {state.round_phase == "bid" && (
+        <Bidding isCurrent={isCurrent} currentUsername={currentUsername}/>
+      )}
     </div>
   )
 }

@@ -65,13 +65,13 @@ export default function Setup() {
         {state.players.map((player: Player) => (
           <SetupPlayer player={player} position={our_position} key={player.position} onMove={onMove} />
         ))}
-        <div className="absolute w-1/3 h-1/3 bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 flex flex-col justify-around">
+        <div className="absolute w-1/3 h-1/3 bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 flex flex-col justify-around items-center">
         <h3 className="w-full my-4 text-white text-xs">
           Game code: <br/>
           <span className="text-lg text-bold">{state.gamecode}</span>
         </h3>
-        {<Button onClick={onLeave} variant="secondary" className="h-8 w-28 mx-auto text-green-900">Leave</Button>}
-        {isHost && <Button onClick={onStart} variant="secondary" className="h-8 w-28 mx-auto my-2 text-green-900">Start game</Button>}
+        {<Button onClick={onLeave} variant="secondary" className="h-8 w-28 text-green-900">Leave</Button>}
+        {isHost && <Button onClick={onStart} variant="secondary" className="h-8 w-28 my-2 text-green-900">Start game</Button>}
         {!isHost && <h3 className="w-full my-5 text-white text-xs">Waiting for host...</h3>}
         
         </div>
