@@ -108,7 +108,7 @@ export default function Bidding({isCurrent, currentUsername, validActions}: {isC
         <div className="h-9 col-span-5 flex justify-between m-1">
           <Button disabled={!isValid("M")} onClick={()=>onBid("M")} variant="outline" className={cn("", buttonClasses)}>Misere</Button>
           <Button disabled={!isValid("OM")} onClick={()=>onBid("OM")}variant="outline" className={cn("min-w-[40%]", buttonClasses)}>Open Misere</Button>
-          <Button disabled={!isValid("P")} onClick={()=>onBid("P")} variant="outline" className={cn("bg-red-400 outline-green-400 hover:bg-green-400/60", buttonClasses)}>Pass</Button>
+          <Button disabled={!isValid("P")} onClick={()=>onBid("P")} variant="outline" className={cn("bg-green-400 outline-green-400 hover:bg-green-400/60", buttonClasses)}>Pass</Button>
         </div>
       </div>
       </>)}

@@ -1,6 +1,6 @@
 import Card from "./card";
 
-export default function Hand({cards, num, width, height}: {cards: string[] | undefined, num: number, width: number, height: number}) {
+export default function Hand({cards, num, width, height, interactive}: {cards: string[] | undefined, num: number, width: number, height: number, interactive: boolean}) {
   if (!cards) {
     cards  = Array(num).fill("back");
   }
@@ -13,7 +13,7 @@ export default function Hand({cards, num, width, height}: {cards: string[] | und
   const handTranslate = (width - cardWidth * (num + 3) / 4) / 2
 
   return (
-    <div className="relative h-full mx-auto flex z-[3]" style={{width: 13 * cardWidth, transform: `translateX(${handTranslate}px)`}}>
+    <div className="relative h-full mx-auto flex z-[3] pointer-events-none" style={{width: 13 * cardWidth, transform: `translateX(${handTranslate}px)`}}>
       {cards.map((card, i) => {
         const angle = (i - Math.floor(cards!.length / 2)) * angleIncrement;
         const translateY = Math.abs(i - cards!.length / 2 + 2)**1.9 * heightIncrement;
@@ -25,7 +25,8 @@ export default function Hand({cards, num, width, height}: {cards: string[] | und
           style={{
             zIndex: i,
             transform: `translateX(-${translateX}%) translateY(${translateY}px) rotate(${angle}deg`,
-            width: cardWidth
+            width: cardWidth,
+            pointerEvents: interactive ? "all" : "none"
           }}/>
       )})}
     </div>
