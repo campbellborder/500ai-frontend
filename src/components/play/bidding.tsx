@@ -4,6 +4,35 @@ import { Spade, Club, Diamond, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { wsContext } from "@/contexts/ws-context";
 
+export function BidSymbol({amount, suit}: {amount: string, suit: string}) {
+
+  var icon = null
+  const redIconClasses = "-m-1 sm:-m-[1px] md:m-0 -[1px] h-3 sm:h-4 md:h-[1.125rem] text-red-500 fill-red-500"
+  const blackIconClasses = "-m-1 sm:-m-[1px] md:m-0 h-3 sm:h-4 md:h-[1.125rem] text-black fill-black stroke-1"
+  switch(suit) {
+    case "S":
+      icon = <Spade className={blackIconClasses}/>
+      break
+    case "C":
+      icon = <Club className={blackIconClasses}/>
+      break
+    case "D":
+      icon = <Diamond className={redIconClasses}/>
+      break
+    case "H":
+      icon = <Heart className={redIconClasses}/>
+      break
+  }
+
+  return (
+    <div className="w-full h-full flex items-center justify-center text-xs sm:text-sm md:text-lg">
+        {amount}
+        {icon}
+        {!icon && suit}
+    </div>
+  )
+}
+
 function Bid({amount, suit, valid, onBid}: {amount: string, suit: string, valid: boolean, onBid: (bid: string) => void}) {
   
   var icon = null
@@ -30,11 +59,9 @@ function Bid({amount, suit, valid, onBid}: {amount: string, suit: string, valid:
         variant="outline"
         onClick={()=>onBid(amount + suit)}
         disabled={!valid}
-        className="w-8 sm:w-10 md:w-14 h-5 sm:h-6 md:h-9 p-0 sm:p-1 md:p-2 text-xs sm:text-sm md:text-lg sm:m-[3px] md:m-1 border-0"
+        className="w-8 sm:w-10 md:w-14 h-5 sm:h-6 md:h-9 sm:m-[3px] md:m-1 border-0 text-xs sm:text-sm md:text-lg p-0"
       >
-        {amount}
-        {icon}
-        {!icon && suit}
+        <BidSymbol amount={amount} suit={suit}/>
       </Button>
     </div>
   )

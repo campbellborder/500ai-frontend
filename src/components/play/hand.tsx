@@ -13,9 +13,9 @@ export default function Hand({cards, num, width, height}: {cards: string[] | und
   const handTranslate = (width - cardWidth * (num + 3) / 4) / 2
 
   return (
-    <div className="relative h-full mx-auto flex" style={{width: 13 * cardWidth, transform: `translateX(${handTranslate}px)`}}>
+    <div className="relative h-full mx-auto flex z-[3]" style={{width: 13 * cardWidth, transform: `translateX(${handTranslate}px)`}}>
       {cards.map((card, i) => {
-        const angle = (i-Math.floor(cards!.length / 2)) * angleIncrement;
+        const angle = (i - Math.floor(cards!.length / 2)) * angleIncrement;
         const translateY = Math.abs(i - cards!.length / 2 + 2)**1.9 * heightIncrement;
         const translateX = (overlap * i)
         return (

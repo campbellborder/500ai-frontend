@@ -21,7 +21,8 @@ export interface Player {
   host: boolean,
   you: boolean,
   current?: boolean,
-  hand?: string[],
   num_cards?: number,
+  hand?: string[],
   actions? : string[]
+  bids? : string[]
 }
