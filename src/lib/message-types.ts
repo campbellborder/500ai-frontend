@@ -22,5 +22,6 @@ export interface Player {
   you: boolean,
   current?: boolean,
   hand?: string[],
-  num_cards?: number
+  num_cards?: number,
+  actions? : string[]
 }

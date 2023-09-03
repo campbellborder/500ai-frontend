@@ -12,15 +12,11 @@ export default function Play() {
   console.log(state)
 
   // Get position and current
-  var isCurrent = false
-  var currentUsername = null
-  var our_position: string
+  var currentUsername: string
+  var thisPlayer: Player
   state.players.forEach((player: Player) => {
     if (player.you) {
-      our_position = player.position
-      if (player.current) {
-        isCurrent = true
-      }
+      thisPlayer = player
     } else {
       if (player.current) {
         currentUsername = player.username
@@ -31,11 +27,20 @@ export default function Play() {
   return (
     <div className="absolute flex items-center justify-center w-full h-full overflow-hidden">
       {state.players.map((player: Player) => (
-        <PlayerComponent player={player} our_position={our_position} key={player.position}/>
+        <PlayerComponent player={player} our_position={thisPlayer.position} key={player.position}/>
       ))}
       {state.round_phase == "bid" && (
-        <Bidding isCurrent={isCurrent} currentUsername={currentUsername}/>
+        <Bidding isCurrent={thisPlayer!.current!} currentUsername={currentUsername!} validActions={thisPlayer!.actions!}/>
       )}
+      {state.round_phase == "play" && (
+        //Trick
+        null
+      )}
+      {
+        // Gamecode
+        // Score
+        // Leave button
+      }
     </div>
   )
 }

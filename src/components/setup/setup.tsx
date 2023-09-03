@@ -36,24 +36,23 @@ export default function Setup() {
   }
 
   function onMove(position: string) {
-    ws.send(JSON.stringify(
-      {
-        "type": "update",
-        "phase": "setup",
-        "action": {
-          "type": "move-position",
-          "position": position
-        }
-      }))
+    ws.send(JSON.stringify({
+      type: "update",
+      phase: "setup",
+      action: {
+        type: "move-position",
+        position: position
+      }
+    }))
   }
 
   function onStart() {
     ws.send(JSON.stringify(
       {
-        "type": "update",
-        "phase": "setup",
-        "action": {
-          "type": "start-game"
+        type: "update",
+        phase: "setup",
+        action: {
+          type: "start-game"
         }
       }))
   }
