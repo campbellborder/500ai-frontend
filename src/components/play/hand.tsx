@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import Card from "./card";
+import { discardContext } from "@/contexts/contexts";
 
-export default function Hand({cards, num, width, height, interactive}: {cards: string[] | undefined, num: number, width: number, height: number, interactive: boolean}) {
+export default function Hand({cards, num, width, height}: {cards: string[] | undefined, num: number, width: number, height: number}) {
   if (!cards) {
     cards  = Array(num).fill("back");
   }
@@ -25,8 +27,7 @@ export default function Hand({cards, num, width, height, interactive}: {cards: s
           style={{
             zIndex: i,
             transform: `translateX(-${translateX}%) translateY(${translateY}px) rotate(${angle}deg`,
-            width: cardWidth,
-            pointerEvents: interactive ? "all" : "none"
+            width: cardWidth
           }}/>
       )})}
     </div>

@@ -82,14 +82,14 @@ const discarding = {
     ]
 }
 
-export default function StateProvider({children} : {children: ReactElement}) {
+export default function StateProvider({ children }: { children: ReactElement }) {
 
-    // const [state, setState] = useState(discarding)
-    const [state, setState] = useState({phase: "start"})
+  // const [state, setState] = useState(discarding)
+  const [state, setState] = useState({ phase: "start" })
 
   return (
-    <stateContext.Provider value={{state: state, setState: setState}}>
+    <stateContext.Provider value={{ state: state, setState: setState }}>
       {children}
-    </stateContext.Provider> 
+    </stateContext.Provider>
   )
 }
