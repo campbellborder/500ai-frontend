@@ -1,9 +1,8 @@
 'use client'
 
-import { ReactElement, useContext, useEffect, useRef, useState } from 'react';
-import { wsContext } from '@/contexts/ws-context';
+import { ReactElement, useContext, useRef } from 'react';
+import { wsContext, stateContext, discardContext } from '@/contexts/contexts';
 import { addInitialEventListeners, displayAlertToast, displayErrorToast } from '@/lib/ws-utils';
-import { stateContext } from '@/contexts/state-context';
 import { useToast } from '@/components/ui/use-toast';
 import { AlertMessage, Message, StateMessage } from '@/lib/message-types';
 
@@ -11,6 +10,7 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
 
   // Hooks
   const { setState } = useContext(stateContext)
+  const { clearSelection } = useContext(discardContext)
   const ws = useRef<WebSocket | null>(null);
   const { toast } = useToast()
   const closed = useRef(false)
@@ -37,6 +37,7 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
           displayErrorToast(toast)
         }
         setState({phase: "start"});
+        clearSelection()
         ws.current = null;
         closed.current = false
       });

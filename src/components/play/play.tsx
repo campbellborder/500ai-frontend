@@ -1,18 +1,17 @@
 'use client'
 
 import { useContext } from "react"
-import { wsContext } from "@/contexts/ws-context"
-import { stateContext } from "@/contexts/state-context"
+import { wsContext, stateContext } from "@/contexts/contexts"
 import { Player } from "@/lib/message-types"
+import { Button } from "../ui/button"
 import PlayerComponent from "./player"
 import Bidding from "./bidding"
-import { Button } from "../ui/button"
+import Discarding from "./discarding"
 
 export default function Play() {
 
   const { state } = useContext(stateContext)
   const { close } = useContext(wsContext)
-  console.log(state)
 
   // Get position and current
   var currentUsername: string
@@ -42,6 +41,9 @@ export default function Play() {
       {state.round_phase == "bid" && (
         <Bidding isCurrent={thisPlayer!.current!} currentUsername={currentUsername!} validActions={thisPlayer!.actions!}/>
       )}
+      {state.round_phase == "discard" && (
+        <Discarding isCurrent={thisPlayer!.current!} currentUsername={currentUsername!}/>
+      )}
       {state.round_phase == "play" && (
         //Trick
         null
@@ -53,7 +55,7 @@ export default function Play() {
       <div className="absolute top-0 right-0 text-white p-5">
         <p>Score: {state.scores[team]} - {state.scores[1-team]}</p>
       </div>
-      <div className="absolute bottom-0 right-0 p-5">
+      <div className="absolute bottom-0 left-0 p-5">
         <Button variant="outline" onClick={onLeave} disabled={false}>Leave</Button>
       </div>
     </div>

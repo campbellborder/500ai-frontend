@@ -3,9 +3,9 @@
 // Imports
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2 } from "lucide-react"
 import { useContext, useState } from "react"
-import { wsContext } from "@/contexts/ws-context"
+import { wsContext } from "@/contexts/contexts"
+import { Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 
 // Component imports

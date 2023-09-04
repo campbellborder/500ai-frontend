@@ -1,8 +1,7 @@
 'use client'
 
-
 import { useContext } from "react"
-import { stateContext } from "@/contexts/state-context"
+import { stateContext } from "@/contexts/contexts"
 
 import Start from "@/components/start/start"
 import StartDialog from "@/components/start/start-dialog"

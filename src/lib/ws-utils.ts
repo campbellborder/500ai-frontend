@@ -50,11 +50,11 @@ export function addInitialEventListeners(
 export function displayAlertToast(toast: any, message: AlertMessage) {
   if (message.status == "player-joined") {
     toast({
-      description: `${message.username} has joined the game.`,
+      description: `${message.username} joined the game.`,
     })
   } else if (message.status == "player-left") {
     toast({
-      description: `${message.username} has left the game.`,
+      description: `${message.username} left the game.`,
       variant: "destructive"
     })
   } else if (message.status == "new-host") {

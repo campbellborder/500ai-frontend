@@ -1,8 +1,8 @@
+import { cn } from "@/lib/utils";
 import { useContext } from "react";
+import { wsContext } from "@/contexts/contexts";
 import { Button } from "../ui/button";
 import { Spade, Club, Diamond, Heart } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { wsContext } from "@/contexts/ws-context";
 
 export function BidSymbol({amount, suit}: {amount: string, suit: string}) {
 
@@ -33,7 +33,7 @@ export function BidSymbol({amount, suit}: {amount: string, suit: string}) {
   )
 }
 
-function Bid({amount, suit, valid, onBid}: {amount: string, suit: string, valid: boolean, onBid: (bid: string) => void}) {
+function BidButton({amount, suit, valid, onBid}: {amount: string, suit: string, valid: boolean, onBid: (bid: string) => void}) {
   
   var icon = null
   const redIconClasses = "-m-1 sm:-m-[1px] md:m-0 -[1px] h-3 sm:h-4 md:h-[1.125rem] text-red-500 fill-red-500"
@@ -74,7 +74,6 @@ export default function Bidding({isCurrent, currentUsername, validActions}: {isC
   const amounts = ["6", "7", "8", "9", "10"]
   const buttonClasses = "h-full p-2 border-0 text-xs md:text-base w-1/4"
 
-
   // Hooks
   const { ws } = useContext(wsContext)
 
@@ -102,7 +101,7 @@ export default function Bidding({isCurrent, currentUsername, validActions}: {isC
         {amounts.flatMap((amount, i) => (
           suits.map((suit, j) => {
             var action = amount + suit
-            return <Bid key={i*5 + j} suit={suit} amount={amount} valid={isValid(action)} onBid={onBid}></Bid>
+            return <BidButton key={i*5 + j} suit={suit} amount={amount} valid={isValid(action)} onBid={onBid}/>
           })
         ))}
         <div className="h-9 col-span-5 flex justify-between m-1">

@@ -1,10 +1,9 @@
 'use client'
 
 import { useContext, useEffect } from "react"
-import { wsContext } from "@/contexts/ws-context"
-import { stateContext } from "@/contexts/state-context"
-import { SetupPlayer } from "./setup-player"
+import { wsContext, stateContext } from "@/contexts/contexts"
 import { Button } from "../ui/button"
+import SetupPlayer from "./setup-player"
 
 interface Player {
   position: string,

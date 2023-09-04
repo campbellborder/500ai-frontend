@@ -2,7 +2,7 @@ import { cn, mod } from "@/lib/utils"
 import { Button } from "../ui/button"
 import Card from "../play/card"
 
-export function SetupPlayer({ player, position: our_position, onMove }: { player: any, position: string, onMove: (position: string) => void}) {
+export default function SetupPlayer({ player, position: our_position, onMove }: { player: any, position: string, onMove: (position: string) => void}) {
 
   const positions = ["N", "E", "S", "W"]
   const positionClasses = [

@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactElement, useState } from 'react';
-import { stateContext } from '@/contexts/state-context';
+import { stateContext } from '@/contexts/contexts';
 
 const discarding = {
     "type": "state",
@@ -84,8 +84,8 @@ const discarding = {
 
 export default function StateProvider({children} : {children: ReactElement}) {
 
-    const [state, setState] = useState(discarding)
-    // const [state, setState] = useState({phase: "start"})
+    // const [state, setState] = useState(discarding)
+    const [state, setState] = useState({phase: "start"})
 
   return (
     <stateContext.Provider value={{state: state, setState: setState}}>

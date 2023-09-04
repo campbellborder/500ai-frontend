@@ -1,8 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import WebSocketsProvider from '@/providers/ws-provider'
-import StateProvider from '@/providers/state-provider'
+import StateProvider from '@/contexts/state-provider'
+import DiscardProvider from '@/contexts/discard-provider'
+import WebSocketsProvider from '@/contexts/ws-provider'
 import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -20,12 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <StateProvider>
-        <WebSocketsProvider>
-          <body className={inter.className}>
-            {children}
-            <Toaster/>
-          </body>
-        </WebSocketsProvider>
+        <DiscardProvider>
+          <WebSocketsProvider>
+            <body className={inter.className}>
+              {children}
+              <Toaster/>
+            </body>
+          </WebSocketsProvider>
+        </DiscardProvider>
       </StateProvider>
     </html>
   )
