@@ -7,6 +7,7 @@ import { Button } from "../ui/button"
 import PlayerComponent from "./player"
 import Bidding from "./bidding"
 import Discarding from "./discarding"
+import Trick from "./trick"
 
 export default function Play() {
 
@@ -29,10 +30,6 @@ export default function Play() {
   // Get team
   const team = (thisPlayer!.position == "N" || thisPlayer!.position == "S") ? 0 : 1
 
-  function onLeave() {
-    close()
-  }
-
   return (
     <div className="absolute flex items-center justify-center w-full h-full overflow-hidden">
       {state.players.map((player: Player) => (
@@ -45,8 +42,7 @@ export default function Play() {
         <Discarding isCurrent={thisPlayer!.current!} currentUsername={currentUsername!}/>
       )}
       {state.round_phase == "play" && (
-        //Trick
-        null
+        <Trick cards={state.trick} ourPosition={thisPlayer!.position} leadPosition={state.lead}/>
       )}
 
       <div className="absolute top-0 left-0 text-white p-5">
@@ -56,7 +52,7 @@ export default function Play() {
         <p>Score: {state.scores[team]} - {state.scores[1-team]}</p>
       </div>
       <div className="absolute bottom-0 left-0 p-5">
-        <Button variant="outline" onClick={onLeave} disabled={false}>Leave</Button>
+        <Button variant="outline" onClick={() => close()} disabled={false}>Leave</Button>
       </div>
     </div>
   )

@@ -1,11 +1,13 @@
 import { useContext } from "react";
 import Card from "./card";
-import { discardContext } from "@/contexts/contexts";
+import { cardWidthContext } from "@/contexts/contexts";
 
 export default function Hand({cards, num, width, height}: {cards: string[] | undefined, num: number, width: number, height: number}) {
   if (!cards) {
     cards  = Array(num).fill("back");
   }
+
+  const { setCardWidth } = useContext(cardWidthContext)
 
   const angleIncrement = 3;
   const heightIncrement = 1;
@@ -13,7 +15,9 @@ export default function Hand({cards, num, width, height}: {cards: string[] | und
   const minWidth = 50
   const cardWidth = Math.max(Math.min(Math.ceil(width * 4 / 13), Math.ceil(height * 9 / 14)), minWidth)
   const handTranslate = (width - cardWidth * (num + 3) / 4) / 2
-
+  
+  setCardWidth(cardWidth) // TODO: does this need to be in a hook?
+  
   return (
     <div className="relative h-full mx-auto flex z-[3] pointer-events-none" style={{width: 13 * cardWidth, transform: `translateX(${handTranslate}px)`}}>
       {cards.map((card, i) => {
@@ -24,6 +28,7 @@ export default function Hand({cards, num, width, height}: {cards: string[] | und
         <Card
           key={i}
           card={card}
+          interactive={true}
           style={{
             zIndex: i,
             transform: `translateX(-${translateX}%) translateY(${translateY}px) rotate(${angle}deg`,

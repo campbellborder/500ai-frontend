@@ -4,7 +4,7 @@ import { ReactElement, useContext, useRef } from 'react';
 import { wsContext, stateContext, discardContext } from '@/contexts/contexts';
 import { addInitialEventListeners, displayAlertToast, displayErrorToast } from '@/lib/ws-utils';
 import { useToast } from '@/components/ui/use-toast';
-import { AlertMessage, Message, StateMessage } from '@/lib/message-types';
+import { Alert, Message, State } from '@/lib/message-types';
 
 export default function WebSocketsProvider({children} : {children: ReactElement}) {
 
@@ -27,9 +27,9 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
       ws.current.addEventListener("message", function(event: MessageEvent) {
         const message: Message = JSON.parse(event.data)
         if (message.type == "state") {
-          setState(message as StateMessage)
+          setState(message as State)
         } else if (message.type == "alert") {
-          displayAlertToast(toast, message as AlertMessage)
+          displayAlertToast(toast, message as Alert)
         }
       });
       ws.current.addEventListener("close", function(event: CloseEvent) {

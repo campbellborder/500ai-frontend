@@ -1,13 +1,18 @@
-export type Message = StateMessage | AlertMessage
+export type Message = State | Alert
 
-export interface StateMessage {
+export interface State {
   type: "state",
-  state: "setup" | "play",
-  gamecode: string
-  players: Player[]
+  phase: "start" | "setup" | "play",
+  gamecode?: string,
+  players?: Player[],
+  round_phase?: string,
+  contract?: string,
+  trick?: string[],
+  scores?: number[],
+  lead?: "N" | "E" | "S" | "W",
 }
 
-export interface AlertMessage {
+export interface Alert {
   type: "alert",
   status: "player-joined" | "player-left" | "new-host",
   username: string,

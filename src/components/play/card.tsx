@@ -3,7 +3,7 @@ import { discardContext, stateContext } from "@/contexts/contexts"
 import Image from "next/image"
 import { useContext } from "react"
 
-export default function Card({card, style}: {card: string, style: React.CSSProperties}) {
+export default function Card({card, interactive = true, style}: {card: string, interactive: boolean, style: React.CSSProperties}) {
   
   const { state } = useContext(stateContext)
   const { selectedCards, selectCard, unselectCard } = useContext(discardContext)
@@ -21,7 +21,7 @@ export default function Card({card, style}: {card: string, style: React.CSSPrope
   }
 
   var classes = ""
-  if (card == "back") {
+  if (card == "back" || interactive == false) {
     classes = "!pointer-events-none"
   } else if (state.round_phase == "discard") {
     if (selectedCards.includes(card)) {
@@ -34,7 +34,7 @@ export default function Card({card, style}: {card: string, style: React.CSSPrope
   }
   
   return (
-    <div onClick={onClick} style={style} className="bg-gray-500 rounded-lg">
+    <div onClick={onClick} style={style} className="bg-gray-500 rounded-xl">
     <div
     className={cn("w-full h-full pointer-events-auto hover:cursor-pointer hover:-translate-y-[9%] transition-transform duration-200 ease-in-out hover:drop-shadow-lg", classes)}>
       <Image

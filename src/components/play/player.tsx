@@ -8,7 +8,7 @@ import Bids from "./bids";
 export default function Player({ player, ourPosition }: { player: PlayerType, ourPosition: string }) {
 
   const widthPercent = 0.95
-  const ratio = 0.37
+  const ratio = 0.33
   const positions = ["N", "E", "S", "W"]
 
   // if (typeof window == "undefined") {

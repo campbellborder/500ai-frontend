@@ -5,6 +5,7 @@ import StateProvider from '@/contexts/state-provider'
 import DiscardProvider from '@/contexts/discard-provider'
 import WebSocketsProvider from '@/contexts/ws-provider'
 import { Toaster } from '@/components/ui/toaster'
+import CardWidthProvider from '@/contexts/card-width-provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,10 +24,12 @@ export default function RootLayout({
       <StateProvider>
         <DiscardProvider>
           <WebSocketsProvider>
+            <CardWidthProvider>
             <body className={inter.className}>
               {children}
               <Toaster/>
             </body>
+            </CardWidthProvider>
           </WebSocketsProvider>
         </DiscardProvider>
       </StateProvider>
