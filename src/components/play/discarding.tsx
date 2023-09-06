@@ -9,7 +9,7 @@ export default function Discarding({isCurrent, currentUsername}: {isCurrent: boo
 
   function onGo() {
     // Send play card messages
-    selectedCards.foreach((card: string) => {
+    selectedCards.forEach((card: string) => {
       ws.send(JSON.stringify({
         type: "update",
         phase: "play",
