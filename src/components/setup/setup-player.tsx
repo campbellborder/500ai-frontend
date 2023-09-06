@@ -22,7 +22,7 @@ export default function SetupPlayer({ player, position: our_position, onMove }: 
         {player.host && <span>{" (Host)"}</span>}
       </h2>
       {player.type == "empty" && <Button onClick={() => onMove(player.position)} variant="outline" className="h-8 w-28 bg-transparent text-white rounded-b-none border-b-0">Move here</Button>}
-      {player.type != "empty" && <Card card="back" style={{width: 112, height: 32, pointerEvents: "none"}}></Card>}
+      {player.type != "empty" && <Card card="back" style={{width: 112, height: 32}}/>}
 
     </div>
   )

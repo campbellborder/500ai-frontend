@@ -74,7 +74,7 @@ export default function Player({ player, ourPosition }: { player: PlayerType, ou
           {player.host && <span>{" (Host)"}</span>}
         </div>
       <div className="relative h-full w-full flex flex-col items-center justify-end z-[1]" style={{ transform: `translateY(${playerHeight / 2}px)` }}>
-        <Hand cards={player.hand!} num={player.num_cards!} width={playerWidth} height={playerHeight}/>
+        <Hand player={player} width={playerWidth} height={playerHeight}/>
       </div>
       {player.bids && (
         <Bids player={player} positionIndex={positionIndex} />
