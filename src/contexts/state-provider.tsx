@@ -71,7 +71,7 @@ const playing = {
   "contract": "8C",
   "trick": [
       "8C",
-      null,
+      "RJ",
       "JC",
       "KH"
   ],
