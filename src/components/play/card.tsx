@@ -35,29 +35,24 @@ export default function Card({card, interactive = true, invalid = false, selecte
 
   var classes = ""
   var bgClasses = ""
-  if (card == "back" || interactive == false) {
-    classes = cn(classes, "!pointer-events-none")
-  } else {
-    classes = cn(classes, "")
+  if (interactive) {
     bgClasses = cn(bgClasses, "pointer-events-auto hover:cursor-pointer hover:-translate-y-[9%] transition-transform duration-200 ease-in-out hover:drop-shadow-lg")
   }
   if (selected) {
-    classes = cn(classes, "-translate-y-[9%] drop-shadow-lg")
+    classes = cn(classes, "")
+    bgClasses = cn(bgClasses, "-translate-y-[9%] drop-shadow-lg")
   }
   if (trump) {
     classes = cn(classes, "opacity-[87%]")
     bgClasses = cn(bgClasses, "bg-yellow-400")
   }
   if (invalid) {
-    classes = cn(classes, "!opacity-50 hover:!translate-y-0 hover:!cursor-default")
-    bgClasses = cn(bgClasses, "bg-gray-500")
+    classes = cn(classes, "!opacity-50")
+    bgClasses = cn(bgClasses, "bg-gray-500 hover:!translate-y-0 hover:!cursor-default hover:!drop-shadow-none")
   }
-
   if (trump && invalid) {
     bgClasses = cn(bgClasses, "!bg-[#AC9B4F]")
   }
-
-
 
   return (
     <div onClick={onClick}className={cn("bg-gray-600 rounded-[10px]", bgClasses)}>

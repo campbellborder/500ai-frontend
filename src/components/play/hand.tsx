@@ -39,13 +39,12 @@ export default function Hand({player, width, height}: {player: Player, width: nu
         const invalid = selectedCards.length == 3 && !selected && card != "back"
         const trump = isTrump(card, state["contract"])
         return (
-          <div style={{
+          <div key={i} style={{
             zIndex: i,
             transform: `translateX(-${translateX}%) translateY(${translateY}px) rotate(${angle}deg`,
             width: cardWidth
           }}>
             <Card
-              key={i}
               card={card}
               interactive={player.you && player.current}
               selected={selected}
