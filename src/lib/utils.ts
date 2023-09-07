@@ -27,10 +27,15 @@ function isLeftBower(card: string, trumpSuit: string) {
 }
 
 export function isTrump(card: string, bid: string) {
-  const [_, trumpSuit] = splitBid(bid)
   if (card == "RJ") {
     return true
-  } else if (["NT", "M", "OM"].includes(trumpSuit)) {
+  } else if (!bid) {
+    return false
+  }
+
+  const [_, trumpSuit] = splitBid(bid)
+
+  if (["NT", "M", "OM"].includes(trumpSuit)) {
     return false
   } else if (card[1] == trumpSuit) {
     return true

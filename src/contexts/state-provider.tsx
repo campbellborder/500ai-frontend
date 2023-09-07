@@ -80,8 +80,8 @@ const playing = {
 
 export default function StateProvider({ children }: { children: ReactElement }) {
 
-  const [state, setState] = useState(playing)
-  // const [state, setState] = useState({type: "state", phase: "start" })
+  // const [state, setState] = useState(playing)
+  const [state, setState] = useState({type: "state", phase: "start" })
 
   return (
     <stateContext.Provider value={{ state: state, setState: setState }}>

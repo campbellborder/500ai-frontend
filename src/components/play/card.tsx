@@ -4,8 +4,8 @@ import Image from "next/image"
 import { useContext } from "react"
 
 // Important that invalid are still set to interactive
-export default function Card({card, interactive = true, invalid = false, selected = false, trump = false, style = {}}: 
-  {card: string, interactive?: boolean, invalid?: boolean, selected?: boolean, trump?: boolean, style?: React.CSSProperties}) {
+export default function Card({card, interactive = true, invalid = false, selected = false, trump = false}: 
+  {card: string, interactive?: boolean, invalid?: boolean, selected?: boolean, trump?: boolean}) {
   
   const { state } = useContext(stateContext)
   const { selectedCards, selectCard, unselectCard } = useContext(discardContext)
@@ -38,8 +38,8 @@ export default function Card({card, interactive = true, invalid = false, selecte
   if (card == "back" || interactive == false) {
     classes = cn(classes, "!pointer-events-none")
   } else {
-    classes = cn(classes, "pointer-events-auto hover:cursor-pointer hover:-translate-y-[9%] transition-transform duration-200 ease-in-out hover:drop-shadow-lg")
-    bgClasses = cn(bgClasses, "")
+    classes = cn(classes, "")
+    bgClasses = cn(bgClasses, "pointer-events-auto hover:cursor-pointer hover:-translate-y-[9%] transition-transform duration-200 ease-in-out hover:drop-shadow-lg")
   }
   if (selected) {
     classes = cn(classes, "-translate-y-[9%] drop-shadow-lg")
@@ -60,7 +60,7 @@ export default function Card({card, interactive = true, invalid = false, selecte
 
 
   return (
-    <div onClick={onClick} style={style} className={cn("bg-gray-600 rounded-[10px]", bgClasses)}>
+    <div onClick={onClick}className={cn("bg-gray-600 rounded-[10px]", bgClasses)}>
     <div
     className={cn("w-full h-full", classes)}>
       <Image
