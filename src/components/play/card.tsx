@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn, splitCard } from "@/lib/utils"
 import { discardContext, stateContext, wsContext } from "@/contexts/contexts"
 import Image from "next/image"
 import { useContext } from "react"
@@ -22,12 +22,14 @@ export default function Card({card, interactive = true, invalid = false, selecte
         selectCard(card)
       }
     } else if (state.round_phase == "play") {
+      const [rank, suit] = splitCard(card)
       ws.send(JSON.stringify({
         type: "update",
         phase: "play",
         action: {
           type: "play-card",
-          card: card
+          rank: rank,
+          suit: suit
         }
       }))
     }

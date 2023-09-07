@@ -33,7 +33,7 @@ export function BidSymbol({amount, suit}: {amount: string, suit: string}) {
   )
 }
 
-function BidButton({amount, suit, valid, onBid}: {amount: string, suit: string, valid: boolean, onBid: (bid: string) => void}) {
+function BidButton({amount, suit, valid, onBid}: {amount: string, suit: string, valid: boolean, onBid: (amount: string, suit: string) => void}) {
   
   var icon = null
   const redIconClasses = "-m-1 sm:-m-[1px] md:m-0 -[1px] h-3 sm:h-4 md:h-[1.125rem] text-red-500 fill-red-500"
@@ -57,7 +57,7 @@ function BidButton({amount, suit, valid, onBid}: {amount: string, suit: string, 
     <div>
       <Button
         variant="outline"
-        onClick={()=>onBid(amount + suit)}
+        onClick={()=>onBid(amount, suit)}
         disabled={!valid}
         className="w-8 sm:w-10 md:w-14 h-5 sm:h-6 md:h-9 sm:m-[3px] md:m-1 border-0 text-xs sm:text-sm md:text-lg p-0"
       >
@@ -82,13 +82,24 @@ export default function Bidding({isCurrent, currentUsername, validActions}: {isC
     return validActions.includes(action)
   }
 
-  function onBid(bid: string) {
+  function onBid(amount: string, suit: string) {
     ws.send(JSON.stringify({
       type: "update",
       phase: "play",
       action: {
         type: "make-bid",
-        bid: bid
+        amount: amount,
+        suit: suit
+      }
+    }))
+  }
+
+  function onPass() {
+    ws.send(JSON.stringify({
+      type: "update",
+      phase: "play",
+      action: {
+        type: "pass"
       }
     }))
   }
@@ -105,9 +116,9 @@ export default function Bidding({isCurrent, currentUsername, validActions}: {isC
           })
         ))}
         <div className="h-9 col-span-5 flex justify-between m-1">
-          <Button disabled={!isValid("M")} onClick={()=>onBid("M")} variant="outline" className={cn("", buttonClasses)}>Misere</Button>
-          <Button disabled={!isValid("OM")} onClick={()=>onBid("OM")}variant="outline" className={cn("min-w-[40%]", buttonClasses)}>Open Misere</Button>
-          <Button disabled={!isValid("P")} onClick={()=>onBid("P")} variant="outline" className={cn("bg-green-400 outline-green-400 hover:bg-green-400/60", buttonClasses)}>Pass</Button>
+          <Button disabled={!isValid("M")} onClick={()=>onBid("", "M")} variant="outline" className={cn("", buttonClasses)}>Misere</Button>
+          <Button disabled={!isValid("OM")} onClick={()=>onBid("", "OM")}variant="outline" className={cn("min-w-[40%]", buttonClasses)}>Open Misere</Button>
+          <Button disabled={!isValid("P")} onClick={onPass} variant="outline" className={cn("bg-green-400 outline-green-400 hover:bg-green-400/60", buttonClasses)}>Pass</Button>
         </div>
       </div>
       </>)}

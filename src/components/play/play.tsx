@@ -14,6 +14,8 @@ export default function Play() {
   const { state } = useContext(stateContext)
   const { close } = useContext(wsContext)
 
+  console.log(state)
+
   // Get position and current
   var currentUsername: string
   var thisPlayer: Player
@@ -49,7 +51,7 @@ export default function Play() {
         <p>Gamecode: {state.gamecode}</p>
       </div>
       <div className="absolute top-0 right-0 text-white p-5">
-        <p>Score: {state.scores[team]} - {state.scores[1-team]}</p>
+        <p>Score: {state.scores[team]} : {state.scores[1-team]}</p>
       </div>
       <div className="absolute bottom-0 left-0 p-5">
         <Button variant="outline" onClick={() => close()} disabled={false}>Leave</Button>

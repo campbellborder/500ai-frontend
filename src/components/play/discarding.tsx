@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Button } from "../ui/button";
 import { discardContext, wsContext } from "@/contexts/contexts";
+import { splitCard } from "@/lib/utils";
 
 export default function Discarding({isCurrent, currentUsername}: {isCurrent: boolean, currentUsername: string | null}) {
 
@@ -10,12 +11,14 @@ export default function Discarding({isCurrent, currentUsername}: {isCurrent: boo
   function onGo() {
     // Send play card messages
     selectedCards.forEach((card: string) => {
+      const [rank, suit] = splitCard(card)
       ws.send(JSON.stringify({
         type: "update",
         phase: "play",
         action: {
           type: "play-card",
-          card: card
+          rank: rank,
+          suit: suit
         }
       }))
     })

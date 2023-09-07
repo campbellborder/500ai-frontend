@@ -11,6 +11,14 @@ export function mod(n: number, m: number) {
   return ((n % m) + m) % m;
 }
 
+export function splitCard(card: string) {
+  if (card == "RJ") {
+    return ["RJ", ""]
+  } else {
+    return [card[0], card[1]]
+  }
+}
+
 export function splitBid(bid: string): [string, string] {
   if (bid == "M" || bid == "OM") {
     return ["10", bid]

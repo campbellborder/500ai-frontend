@@ -60,7 +60,7 @@ export default function Hand({player, width, height}: {player: Player, width: nu
           }}>
             <Card
               card={card}
-              interactive={player.you && player.current}
+              interactive={player.you && player.current && state.round_phase != "bid"}
               selected={selected}
               invalid={invalid}
               trump={trump}
