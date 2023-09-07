@@ -28,6 +28,20 @@ export default function Hand({player, width, height}: {player: Player, width: nu
   useEffect(() => {
     setCardWidth(cardWidth)
   }, [cardWidth])
+
+  function isInvalid(card: string, selected: boolean) {
+    if (card == "back") {
+      return false
+    } else if (state.round_phase == "discard") {
+      return selectedCards.length == 3 && !selected
+    } else if (state.round_phase == "play") {
+      if (player.current) {
+        return !player.actions!.includes(card)
+      } else {
+        return false
+      }
+    }
+  }
   
   return (
     <div className="relative h-full mx-auto flex z-[3] pointer-events-none" style={{width: 13 * cardWidth, transform: `translateX(${handTranslate}px)`}}>
@@ -36,8 +50,8 @@ export default function Hand({player, width, height}: {player: Player, width: nu
         const translateY = Math.abs(i - cards!.length / 2 + 2)**1.9 * heightIncrement;
         const translateX = (overlap * i)
         const selected = selectedCards.includes(card)
-        const invalid = selectedCards.length == 3 && !selected && card != "back"
-        const trump = isTrump(card, state["contract"])
+        const invalid = isInvalid(card, selected)
+        const trump = isTrump(card, state.contract)
         return (
           <div key={i} style={{
             zIndex: i,

@@ -28,8 +28,8 @@ export default function Trick({cards, ourPosition, leadPosition}: {cards: string
         const zIndex = mod(i - leadIndex, 4);
         const trump = isTrump(card, state["contract"])
         return (
-          <div className={cn("absolute", positionClass)} style={{zIndex: zIndex, width: cardWidth}}>
-            <Card key={i} card={card} interactive={false} trump={trump}/>
+          <div key={i} className={cn("absolute", positionClass)} style={{zIndex: zIndex, width: cardWidth}}>
+            <Card card={card} interactive={false} trump={trump}/>
           </div>
         )
       }
