@@ -1,9 +1,10 @@
-import { cn, mod } from "@/lib/utils";
+import { cn, mod, splitBid } from "@/lib/utils";
 import { Bot } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Player as PlayerType } from "@/lib/message-types";
 import Hand from "./hand";
 import Bids from "./bids";
+import { stateContext } from "@/contexts/contexts";
 
 export default function Player({ player, ourPosition }: { player: PlayerType, ourPosition: string }) {
 
@@ -15,6 +16,8 @@ export default function Player({ player, ourPosition }: { player: PlayerType, ou
   //   return null
   // }
 
+  // Hooks
+  const { state } = useContext(stateContext)
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 
@@ -65,6 +68,11 @@ export default function Player({ player, ourPosition }: { player: PlayerType, ou
   const positionIndex = mod(positions.indexOf(player.position) - positions.indexOf(ourPosition), 4);
   const positionStyle = positionStyles[positionIndex];
 
+  var amount, suit: string
+  if (player.declarer) {
+    [amount, suit] = splitBid(state.contract)
+  }
+
   return (
     <div className="absolute"
       style={{ ...sizeStyle, ...positionStyle }}>
@@ -72,6 +80,8 @@ export default function Player({ player, ourPosition }: { player: PlayerType, ou
           {player.type == "ai" && (<span><Bot className="inline w-[20px] md:w-[25px] mb-1 md:mb-2" />{" "}</span>)}
           {player.username}
           {player.host && <span>{" (Host)"}</span>}
+          {player.tricks_won != -1 && (<> &#183; {player.tricks_won}</>)}
+          {player.declarer && `/${amount}`}
         </div>
       <div className="relative h-full w-full flex flex-col items-center justify-end z-[1]" style={{ transform: `translateY(${playerHeight / 2}px)` }}>
         <Hand player={player} width={playerWidth} height={playerHeight}/>

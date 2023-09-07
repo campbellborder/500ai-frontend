@@ -29,5 +29,7 @@ export interface Player {
   num_cards?: number,
   hand?: string[],
   actions? : string[]
-  bids? : string[]
+  bids? : string[],
+  declarer?: boolean,
+  tricks_won?: number
 }

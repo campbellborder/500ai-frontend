@@ -21,7 +21,7 @@ export function splitCard(card: string) {
 
 export function splitBid(bid: string): [string, string] {
   if (bid == "M" || bid == "OM") {
-    return ["10", bid]
+    return ["0", bid]
   }
   const match = bid.match(/^(\d+)([a-zA-Z]+)$/);
   return [match![1], match![2]];
