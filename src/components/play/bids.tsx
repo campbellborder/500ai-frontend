@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, splitBid } from "@/lib/utils";
 import { BidSymbol } from "./bidding";
 import { Player } from "@/lib/message-types";
 
@@ -27,11 +27,6 @@ function Bid({ bid, positionIndex }: { bid: string, positionIndex: number }) {
     "rotate-90 pl-1 pt-4"
   ]
   const positionClass = positionClasses[positionIndex]
-
-  function splitBid(bid: string) {
-    const match = bid.match(/^(\d+)([a-zA-Z]+)$/);
-    return [match![1], match![2]];
-  }
 
   var amount: string
   var suit: string

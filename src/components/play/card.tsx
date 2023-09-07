@@ -34,32 +34,33 @@ export default function Card({card, interactive = true, invalid = false, selecte
   }
 
   var classes = ""
-  var bgClass = ""
+  var bgClasses = ""
   if (card == "back" || interactive == false) {
     classes = cn(classes, "!pointer-events-none")
   } else {
     classes = cn(classes, "pointer-events-auto hover:cursor-pointer hover:-translate-y-[9%] transition-transform duration-200 ease-in-out hover:drop-shadow-lg")
+    bgClasses = cn(bgClasses, "")
   }
   if (selected) {
     classes = cn(classes, "-translate-y-[9%] drop-shadow-lg")
   }
   if (trump) {
-    classes = cn(classes, "opacity-[75%]")
-    bgClass = "bg-yellow-400"
+    classes = cn(classes, "opacity-[87%]")
+    bgClasses = cn(bgClasses, "bg-yellow-400")
   }
   if (invalid) {
     classes = cn(classes, "!opacity-50 hover:!translate-y-0 hover:!cursor-default")
-    bgClass = "bg-gray-500"
+    bgClasses = cn(bgClasses, "bg-gray-500")
   }
 
   if (trump && invalid) {
-    bgClass = "bg-[#AC9B4F]"
+    bgClasses = cn(bgClasses, "!bg-[#AC9B4F]")
   }
 
 
 
   return (
-    <div onClick={onClick} style={style} className={cn("bg-gray-600 rounded-[10px]", bgClass)}>
+    <div onClick={onClick} style={style} className={cn("bg-gray-600 rounded-[10px]", bgClasses)}>
     <div
     className={cn("w-full h-full", classes)}>
       <Image

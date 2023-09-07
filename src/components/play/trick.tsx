@@ -1,6 +1,6 @@
-import { cn, mod } from "@/lib/utils"
+import { cn, isTrump, mod } from "@/lib/utils"
 import { useContext } from "react"
-import { cardWidthContext } from "@/contexts/contexts"
+import { cardWidthContext, stateContext } from "@/contexts/contexts"
 import Card from "./card"
 
 export default function Trick({cards, ourPosition, leadPosition}: {cards: string[], ourPosition: string, leadPosition: string}) {
@@ -16,6 +16,7 @@ export default function Trick({cards, ourPosition, leadPosition}: {cards: string
 
   // Hooks
   const { cardWidth } = useContext(cardWidthContext)
+  const { state } = useContext(stateContext)
 
   const leadIndex = positions.indexOf(leadPosition)
 
@@ -25,9 +26,10 @@ export default function Trick({cards, ourPosition, leadPosition}: {cards: string
         const positionIndex = mod(i - positions.indexOf(ourPosition), 4);
         const positionClass = positionClasses[positionIndex]
         const zIndex = mod(i - leadIndex, 4);
+        const trump = isTrump(card, state["contract"])
         return (
           <div className={cn("absolute", positionClass)} style={{zIndex: zIndex}}>
-            <Card key={i} card={card} interactive={false} style={{width: cardWidth}}/>
+            <Card key={i} card={card} interactive={false} trump={trump} style={{width: cardWidth}}/>
           </div>
         )
       }

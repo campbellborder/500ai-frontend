@@ -1,5 +1,5 @@
 import { MutableRefObject } from "react"
-import { AlertMessage } from "./message-types";
+import { Alert } from "./message-types";
 
 export function addInitialEventListeners(
   ws: MutableRefObject<WebSocket | null>,
@@ -47,7 +47,7 @@ export function addInitialEventListeners(
 
 }
 
-export function displayAlertToast(toast: any, message: AlertMessage) {
+export function displayAlertToast(toast: any, message: Alert) {
   if (message.status == "player-joined") {
     toast({
       description: `${message.username} joined the game.`,

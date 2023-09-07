@@ -1,13 +1,15 @@
 import { useContext, useEffect } from "react";
 import Card from "./card";
-import { cardWidthContext, discardContext } from "@/contexts/contexts";
+import { cardWidthContext, discardContext, stateContext } from "@/contexts/contexts";
 import { Player } from "@/lib/message-types";
+import { isTrump } from "@/lib/utils";
 
 export default function Hand({player, width, height}: {player: Player, width: number, height: number}) {
 
   // Hooks
   const { setCardWidth } = useContext(cardWidthContext)
   const { selectedCards } = useContext(discardContext)
+  const { state } = useContext(stateContext)
 
   const angleIncrement = 3;
   const heightIncrement = 1;
@@ -35,6 +37,7 @@ export default function Hand({player, width, height}: {player: Player, width: nu
         const translateX = (overlap * i)
         const selected = selectedCards.includes(card)
         const invalid = selectedCards.length == 3 && !selected && card != "back"
+        const trump = isTrump(card, state["contract"])
         return (
         <Card
           key={i}
@@ -42,6 +45,7 @@ export default function Hand({player, width, height}: {player: Player, width: nu
           interactive={player.you && player.current}
           selected={selected}
           invalid={invalid}
+          trump={trump}
           style={{
             zIndex: i,
             transform: `translateX(-${translateX}%) translateY(${translateY}px) rotate(${angle}deg`,
