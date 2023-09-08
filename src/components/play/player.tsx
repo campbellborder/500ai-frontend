@@ -80,7 +80,7 @@ export default function Player({ player, ourPosition }: { player: PlayerType, ou
           {player.type == "ai" && (<span><Bot className="inline w-[20px] md:w-[25px] mb-1 md:mb-2" />{" "}</span>)}
           {player.username}
           {player.host && <span>{" (Host)"}</span>}
-          {player.tricks_won != -1 && (<> &#183; {player.tricks_won}</>)}
+          {player.tricks_won != -1 && (player.tricks_won != undefined) && (<> &#183; {player.tricks_won}</>)}
           {player.declarer && `/${amount}`}
         </div>
       <div className="relative h-full w-full flex flex-col items-center justify-end z-[1]" style={{ transform: `translateY(${playerHeight / 2}px)` }}>

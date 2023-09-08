@@ -31,5 +31,6 @@ export interface Player {
   actions? : string[]
   bids? : string[],
   declarer?: boolean,
-  tricks_won?: number
+  tricks_won?: number,
+  winner: boolean
 }

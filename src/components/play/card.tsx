@@ -1,15 +1,48 @@
 import { cn, splitCard } from "@/lib/utils"
 import { discardContext, stateContext, wsContext } from "@/contexts/contexts"
+import { useContext, useState } from "react"
 import Image from "next/image"
-import { useContext } from "react"
+
+import { BidButton } from "./bidding"
+
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { Player } from "@/lib/message-types"
+
+function SelectSuitDialog({open, valid_suits, onSelect}: {open: boolean, valid_suits: string[], onSelect: (suit: string)=> void}) {
+
+  const suits = ["S", "C", "D", "H"]
+
+  return (
+  <AlertDialog open={open}>
+    {/* <AlertDialogTrigger>Open</AlertDialogTrigger> */}
+    <AlertDialogContent className="">
+      <AlertDialogHeader>
+        <AlertDialogTitle className="text-center">Select a suit</AlertDialogTitle>
+      </AlertDialogHeader>
+      <div className="mx-auto grid grid-cols-2">
+        {suits.map((suit: string) => (
+          <BidButton amount="" suit={suit} valid={valid_suits.includes(suit)} onClick={() => onSelect(suit)} />
+        ))}
+        </div>
+    </AlertDialogContent>
+  </AlertDialog>)
+}
+
 
 // Important that invalid are still set to interactive
-export default function Card({card, interactive = true, invalid = false, selected = false, trump = false}: 
-  {card: string, interactive?: boolean, invalid?: boolean, selected?: boolean, trump?: boolean}) {
-  
+export default function Card({ card, interactive = true, invalid = false, selected = false, trump = false, player = null }:
+  { card: string, interactive?: boolean, invalid?: boolean, selected?: boolean, trump?: boolean, player: Player | null } ) {
+
   const { state } = useContext(stateContext)
   const { selectedCards, selectCard, unselectCard } = useContext(discardContext)
   const { ws } = useContext(wsContext)
+  const [ open, setOpen ] = useState<boolean>(false)
+  const [ suits, setSuits] = useState<string[]>([])
 
   function onClick() {
     if (!interactive) {
@@ -22,17 +55,44 @@ export default function Card({card, interactive = true, invalid = false, selecte
         selectCard(card)
       }
     } else if (state.round_phase == "play") {
-      const [rank, suit] = splitCard(card)
-      ws.send(JSON.stringify({
-        type: "update",
-        phase: "play",
-        action: {
-          type: "play-card",
-          rank: rank,
-          suit: suit
+      var rank: string, suit: string
+      if (card == "RJ") {
+        const suits = player!.actions!.filter((action) => action.length == 3).map((action) => action[2]) // Third character of three char actions
+        if (suits.length > 1) {
+          setSuits(suits)
+          setOpen(true)
+          return
+        } else {
+          [rank, suit] = [card, suits[0]]
         }
+      } else {
+        [rank, suit] = splitCard(card)
+      }
+
+      ws.send(JSON.stringify({
+      type: "update",
+      phase: "play",
+      action: {
+        type: "play-card",
+        rank: rank,
+        suit: suit
+      }
       }))
     }
+  }
+
+  function onSelect(suit: string) {
+    setOpen(false)
+    setSuits([])
+    ws.send(JSON.stringify({
+      type: "update",
+      phase: "play",
+      action: {
+        type: "play-card",
+        rank: "RJ",
+        suit: suit
+      }
+      }))
   }
 
   var classes = ""
@@ -57,17 +117,20 @@ export default function Card({card, interactive = true, invalid = false, selecte
   }
 
   return (
-    <div onClick={onClick}className={cn("bg-gray-600 rounded-[10px]", bgClasses)}>
-    <div
-    className={cn("w-full h-full", classes)}>
-      <Image
-        priority
-        src={`/cards/${card}.svg`}
-        alt={card}
-        width="180"
-        height="280"
-      />
+    <>
+    <div onClick={onClick} className={cn("bg-gray-600 rounded-[10px]", bgClasses)}>
+      <div
+        className={cn("w-full h-full", classes)}>
+        <Image
+          priority
+          src={`/cards/${card}.svg`}
+          alt={card}
+          width="180"
+          height="280"
+        />
+      </div>
     </div>
-    </div>
+    <SelectSuitDialog open={open} valid_suits={suits} onSelect={onSelect}/>
+    </>
   )
 }
