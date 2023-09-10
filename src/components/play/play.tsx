@@ -16,7 +16,7 @@ export default function Play() {
 
   console.log(state)
 
-  // Get position and current
+  // Get player and current
   var currentUsername: string
   var thisPlayer: Player
   state.players.forEach((player: Player) => {

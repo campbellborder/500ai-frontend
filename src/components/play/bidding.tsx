@@ -33,7 +33,7 @@ export function BidSymbol({amount, suit}: {amount: string, suit: string}) {
   )
 }
 
-function BidButton({amount, suit, valid, onBid}: {amount: string, suit: string, valid: boolean, onBid: (amount: string, suit: string) => void}) {
+export function BidButton({amount, suit, valid, onClick}: {amount: string, suit: string, valid: boolean, onClick: (amount: string, suit: string) => void}) {
   
   var icon = null
   const redIconClasses = "-m-1 sm:-m-[1px] md:m-0 -[1px] h-3 sm:h-4 md:h-[1.125rem] text-red-500 fill-red-500"
@@ -57,7 +57,7 @@ function BidButton({amount, suit, valid, onBid}: {amount: string, suit: string, 
     <div>
       <Button
         variant="outline"
-        onClick={()=>onBid(amount, suit)}
+        onClick={()=>onClick(amount, suit)}
         disabled={!valid}
         className="w-8 sm:w-10 md:w-14 h-5 sm:h-6 md:h-9 sm:m-[3px] md:m-1 border-0 text-xs sm:text-sm md:text-lg p-0"
       >
@@ -112,7 +112,7 @@ export default function Bidding({isCurrent, currentUsername, validActions}: {isC
         {amounts.flatMap((amount, i) => (
           suits.map((suit, j) => {
             var action = amount + suit
-            return <BidButton key={i*5 + j} suit={suit} amount={amount} valid={isValid(action)} onBid={onBid}/>
+            return <BidButton key={i*5 + j} suit={suit} amount={amount} valid={isValid(action)} onClick={onBid}/>
           })
         ))}
         <div className="h-9 col-span-5 flex justify-between m-1">

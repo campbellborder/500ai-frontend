@@ -8,6 +8,8 @@ import StartDialog from "@/components/start/start-dialog"
 import Setup from "@/components/setup/setup"
 import SetupDialog from "@/components/setup/setup-dialog"
 import Play from "@/components/play/play"
+import OverDialog from "@/components/over/over-dialog"
+import Over from "@/components/over/over"
 
 export default function Home() {
 
@@ -28,6 +30,11 @@ export default function Home() {
 
       {state.phase == "play" &&
       (<Play/>)}
+
+      {state.phase == "over" &&
+      (<OverDialog>
+        <Over/>
+      </OverDialog>)}
     </main>
   )
 

@@ -111,7 +111,7 @@ export default function Player({ player, ourPosition }: { player: PlayerType, ou
           {player.username}
           {/* TODO: Fix logic below, MESSY! */}
           {player.host && <span>{" (Host)"}</span>}
-          {player.tricks_won != -1 && (<> &#183; {player.tricks_won}</>)}
+          {player.tricks_won != -1 && (player.tricks_won != undefined) && (<> &#183; {player.tricks_won}</>)}
           {player.declarer && (
             <>
             {`/${amount} `}

@@ -4,6 +4,9 @@ import { cardWidthContext, discardContext, stateContext } from "@/contexts/conte
 import { Player } from "@/lib/message-types";
 import { isTrump } from "@/lib/utils";
 
+
+
+
 export default function Hand({player, width, height}: {player: Player, width: number, height: number}) {
 
   // Hooks
@@ -29,13 +32,18 @@ export default function Hand({player, width, height}: {player: Player, width: nu
     setCardWidth(cardWidth)
   }, [cardWidth])
 
+
+  // TODO simplify logic here
   function isInvalid(card: string, selected: boolean) {
     if (card == "back") {
       return false
     } else if (state.round_phase == "discard") {
       return selectedCards.length == 3 && !selected
     } else if (state.round_phase == "play") {
-      if (player.current) {
+      if (player.current && player.you) {
+        if (card == "RJ" && player.actions?.find((card) => card.length == 3)) {
+          return false
+        }
         return !player.actions!.includes(card)
       } else {
         return false
@@ -64,6 +72,7 @@ export default function Hand({player, width, height}: {player: Player, width: nu
               selected={selected}
               invalid={invalid}
               trump={trump}
+              player={player}
               />
           </div>
       )})}
