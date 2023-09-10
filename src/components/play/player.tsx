@@ -5,6 +5,36 @@ import { Player as PlayerType } from "@/lib/message-types";
 import Hand from "./hand";
 import Bids from "./bids";
 import { stateContext } from "@/contexts/contexts";
+import { Spade, Club, Diamond, Heart } from "lucide-react";
+
+function BidSymbol({amount, suit}: {amount: string, suit: string}) {
+
+  var icon = null
+  const redIconClasses = "-m-1 sm:-m-[1px] md:m-0 -[1px] h-3 sm:h-4 md:h-[1.125rem] text-red-500 fill-red-500"
+  const blackIconClasses = "-m-1 sm:-m-[1px] md:m-0 h-3 sm:h-4 md:h-[1.125rem] text-black fill-black stroke-1"
+  switch(suit) {
+    case "S":
+      icon = <Spade className={blackIconClasses}/>
+      break
+    case "C":
+      icon = <Club className={blackIconClasses}/>
+      break
+    case "D":
+      icon = <Diamond className={redIconClasses}/>
+      break
+    case "H":
+      icon = <Heart className={redIconClasses}/>
+      break
+  }
+
+  return (
+    <div className="w-full h-full flex items-center justify-center text-xs sm:text-sm md:text-lg">
+        {amount}
+        {icon}
+        {!icon && suit}
+    </div>
+  )
+}
 
 export default function Player({ player, ourPosition }: { player: PlayerType, ourPosition: string }) {
 
@@ -79,9 +109,17 @@ export default function Player({ player, ourPosition }: { player: PlayerType, ou
         <div className="absolute w-full text-center text-white text-md md:text-xl mb-4 z-[0]" style={{ transform: `translateY(${playerHeight / 4}px) ${positionIndex == 2 ? "rotate(180deg)" : ""}` }}>
           {player.type == "ai" && (<span><Bot className="inline w-[20px] md:w-[25px] mb-1 md:mb-2" />{" "}</span>)}
           {player.username}
+          {/* TODO: Fix logic below, MESSY! */}
           {player.host && <span>{" (Host)"}</span>}
           {player.tricks_won != -1 && (<> &#183; {player.tricks_won}</>)}
-          {player.declarer && `/${amount}`}
+          {player.declarer && (
+            <>
+            {`/${amount} `}
+            &#183;
+            {" "}
+            <div className="inline-block"><BidSymbol amount={amount!} suit={suit!}/></div>
+            </>
+          )}
         </div>
       <div className="relative h-full w-full flex flex-col items-center justify-end z-[1]" style={{ transform: `translateY(${playerHeight / 2}px)` }}>
         <Hand player={player} width={playerWidth} height={playerHeight}/>
