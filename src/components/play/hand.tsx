@@ -30,7 +30,7 @@ export default function Hand({player, width, height}: {player: Player, width: nu
   
   useEffect(() => {
     setCardWidth(cardWidth)
-  }, [cardWidth])
+  })
 
 
   // TODO simplify logic here

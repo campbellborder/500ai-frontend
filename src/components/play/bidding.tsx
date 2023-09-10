@@ -107,7 +107,7 @@ export default function Bidding({isCurrent, currentUsername, validActions}: {isC
   return (
     <div className="absolute text-center flex flex-col items-center">
       {isCurrent && (<>
-      <p className="text-white sm:text-lg md:text-xl pb-2">It's your bid</p>
+      <p className="text-white sm:text-lg md:text-xl pb-2">{"It's your bid"}</p>
       <div className=" grid grid-cols-5 bg-white/80 rounded-xl p-3">
         {amounts.flatMap((amount, i) => (
           suits.map((suit, j) => {

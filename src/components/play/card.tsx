@@ -25,8 +25,8 @@ function SelectSuitDialog({open, valid_suits, onSelect}: {open: boolean, valid_s
         <AlertDialogTitle className="text-center">Select a suit</AlertDialogTitle>
       </AlertDialogHeader>
       <div className="mx-auto grid grid-cols-2">
-        {suits.map((suit: string) => (
-          <BidButton amount="" suit={suit} valid={valid_suits.includes(suit)} onClick={() => onSelect(suit)} />
+        {suits.map((suit: string, i: number) => (
+          <BidButton amount="" suit={suit} valid={valid_suits.includes(suit)} onClick={() => onSelect(suit)} key={i} />
         ))}
         </div>
     </AlertDialogContent>
@@ -36,7 +36,7 @@ function SelectSuitDialog({open, valid_suits, onSelect}: {open: boolean, valid_s
 
 // Important that invalid are still set to interactive
 export default function Card({ card, interactive = true, invalid = false, selected = false, trump = false, player = null }:
-  { card: string, interactive?: boolean, invalid?: boolean, selected?: boolean, trump?: boolean, player: Player | null } ) {
+  { card: string, interactive?: boolean, invalid?: boolean, selected?: boolean, trump?: boolean, player?: Player | null } ) {
 
   const { state } = useContext(stateContext)
   const { selectedCards, selectCard, unselectCard } = useContext(discardContext)
