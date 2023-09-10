@@ -55,7 +55,7 @@ export default function WebSocketsProvider({children} : {children: ReactElement}
     return new Promise<void>((resolve, reject) => {
 
       // Construct url
-      const url = new URL("ws://127.0.0.1:8000/")
+      const url = new URL("ws://500ai.online/ws")
       url.searchParams.append("username", username)
       if (gamecode) url.searchParams.append("gamecode", gamecode)
       
